@@ -36,12 +36,18 @@ even_sd_len <- sd(collatz_df$length[collatz_df$parity == "Even"])
 odd_avg_len <- mean(collatz_df$length[collatz_df$parity == "Odd"])
 odd_sd_len <- sd(collatz_df$length[collatz_df$parity == "Odd"])
 
-# To compare, we put it in data.frame of all values 
-even_odd_data <- data.frame(
+# To compare, we put it in data.frame
+# average
+even_odd_avg_len <- data.frame(
   even_avg_len = even_avg_len,
-  odd_avg_len = odd_avg_len,
+  odd_avg_len = odd_avg_len
+  )
+
+#standard deviation
+even_odd_sd_len <- data.frame(
   even_sd_len = even_sd_len,
   odd_sd_len = odd_sd_len
-)
+  )
 
-print(even_odd_data)
+print(even_odd_avg_len)
+print(even_odd_sd_len)
