@@ -26,11 +26,13 @@ print(max_val_int)
 # even starting integers compared to odd ones? 
 # [even_odd_avg_len and even_odd_sd_len]
 
-# Calculate avg/mean length and standard deviation for even starting integers
+# Calculate avg/mean length and standard deviation for;
+
+# even integer
 even_avg_len <- mean(collatz_df$length[collatz_df$parity == "Even"]) 
 even_sd_len <- sd(collatz_df$length[collatz_df$parity == "Even"])
 
-# Calculate avg/mean length and standard deviation for odd starting integers
+# odd integer
 odd_avg_len <- mean(collatz_df$length[collatz_df$parity == "Odd"])
 odd_sd_len <- sd(collatz_df$length[collatz_df$parity == "Odd"])
 
