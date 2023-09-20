@@ -3,7 +3,6 @@
 # Load libraries
 library(tibble)
 library(tidyverse)
-library(ggplot2)
 library(dplyr)
 
 # State the gen_collatz function
