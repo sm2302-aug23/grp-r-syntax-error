@@ -1,7 +1,12 @@
-# Load the necessary libraries
-library(tibble)
+## Task 1 - Generating the Collatz Conjecture
 
-# Define the gen_collatz function
+# Load libraries
+library(tibble)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+
+# State the gen_collatz function
 gen_collatz <- function(n) {
   collatz_seq <- c(n)
   
@@ -17,10 +22,14 @@ gen_collatz <- function(n) {
   return(list(seq = collatz_seq))
 }
 
-# Initialize an empty tibble
-collatz_df <- tibble(start = integer(0), seq = list(), length = integer(0), parity = character(0), max_val = integer(0))
+# Create an empty tibble
+collatz_df <- tibble(start = integer(0),
+                     seq = list(), 
+                     length = integer(0), 
+                     parity = character(0), 
+                     max_val = integer(0))
 
-# Loop through integers from 1 to 10,000 and apply the gen_collatz function
+# Apply the gen_collatz function on integers from 1 to 10,000
 for (i in 1:10000) {
   result <- gen_collatz(i)
   
@@ -35,6 +44,5 @@ for (i in 1:10000) {
             max_val = max(collatz_seq))
 }
 
-# Print the first few rows of collatz_df
 collatz_df
 
