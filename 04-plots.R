@@ -8,7 +8,7 @@ library(ggplot2)
 
 # Create a scatterplot of sequence lengths
 ggplot(collatz_df, aes(x = start,
-                       y = length)) +
+                       y = length)) + 
   geom_point() +
   labs(x = "Starting Integer", 
        y = "Sequence Length") +
@@ -23,7 +23,7 @@ ggplot(collatz_df, aes(x = start,
 # Create a scatterplot of the highest value reached
 ggplot(collatz_df, aes(x = start, 
                        y = max_val)) +
-  geom_point(aes(color = ifelse(start %in% top10_starts$start, 
+  geom_point(aes(color = ifelse(start %in% top10longest_seq$start, 
                                 "Top 10", 
                                 "Others"))) +
   scale_color_manual(values = c("Top 10" = "green", 
