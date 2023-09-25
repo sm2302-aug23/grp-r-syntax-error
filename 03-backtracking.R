@@ -1,47 +1,71 @@
-# Filter collatz_df to retain sequences that exhibit backtracking
-backtracks_df <- collatz_df %>%
-  filter(
-    start > 1,  # Exclude starting integers already at 1
-    any(seq > start)  # Include sequences that go above the starting integer
-  )
+## Task 3
 
-# Calculate the number of times each sequence goes above its starting integer
-backtracks_df <- backtracks_df %>%
-  mutate(
-    backtrack_count = sum(seq > start) - 1  # Count the number of times it goes above start
-  )
+# Load libraries
+library(tibble)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(purrr)
 
-# Determine the maximum value reached after the first backtrack
-max_after_backtrack <- max(
-  unlist(
-    lapply(backtracks_df$seq, function(x) max(x[x > x[1]]))
-  )
-)
-
-# Find the most frequently occurring number of times sequences go above their starting integer
-#mode_backtrack <- mode(backtracks_df$backtrack_count)
-
-# Calculate the mode of backtrack_count using table
-backtrack_counts <- backtracks_df$backtrack_count
-count_table <- table(backtrack_counts)
-
-# Find values with the highest frequency
-max_frequency <- max(count_table)
-modes <- as.numeric(names(count_table[count_table == max_frequency]))
-
-if (length(modes) == 1) {
-  cat("Mode of backtrack_count:", modes, "\n")
-} else {
-  cat("Multiple modes of backtrack_count:", paste(modes, collapse = ", "), "\n")
+# Part (1)----------------------------------------------------------------------
+# Using the has_backtracking function
+has_backtracking <- function(seq) {
+  n <- length(seq)
+  for (i in 1:(n - 2)) {
+    if (!is.na(seq[i]) && !is.na(seq[i + 2]) && seq[i] > seq[i + 2]) {
+      return(TRUE) 
+    }
+  }
+  return(FALSE)
 }
 
-# Count the frequency of backtracking sequences among even and odd starting integers
-even_odd_backtrack <- backtracks_df %>%
-  group_by(parity) %>%
+# Use possibly to handle errors and filter the rows
+backtracks_df <- collatz_df %>%
+  mutate(backtrack = map_lgl(seq, ~possibly(has_backtracking, 
+                                            otherwise = FALSE)(.x))) %>%
+  filter(backtrack)
+
+# to view the result of backtracks_df
+view(backtracks_df)
+
+# Part (2)----------------------------------------------------------------------
+# Count the number of times sequences backtrack for each row
+backtrack_counts <- sapply(backtracks_df$seq, function(seq_list) 
+  sum(!is.na(seq_list)))
+
+# Find the mode (most frequently occurring count)
+mode_backtrack <- as.numeric(names(sort(table(backtrack_counts), 
+                                        decreasing = TRUE)[1]))
+
+# Print the result
+cat("The most frequently occurring number of times sequences backtrack is:", 
+    mode_backtrack, "\n")
+
+# Part (3)----------------------------------------------------------------------
+# Find the maximum value of backtracks_df
+max_value <- backtracks_df %>%
+  summarise(max_after_backtrack = max(map_dbl(seq, ~ max(.x)))) %>%
+  pull(max_after_backtrack)
+
+# Print the updated dataframe
+print(backtracks_df)
+
+# Print the maximum value
+cat("Maximum Value After Backtrack:", max_value)
+
+# Part (4)----------------------------------------------------------------------
+# Unnest the "seq" column to convert it from a list to a long format
+backtracks_df_long <- backtracks_df %>%
+  unnest(seq)
+
+# Calculate the total count of even and odd backtracking integers
+total_even_odd_backtrack <- backtracks_df_long %>%
+  group_by(is_even_odd = ifelse(seq %% 2 == 0, "Even", "Odd")) %>%
   summarise(count = n())
 
-# Print the results
-print(backtracks_df)
-print(max_after_backtrack)
-print(modes)
+# Rename the result column to "even_odd_backtrack"
+even_odd_backtrack <- total_even_odd_backtrack %>%
+  rename(even_odd_backtrack = count)
+
+# Print the result
 print(even_odd_backtrack)
