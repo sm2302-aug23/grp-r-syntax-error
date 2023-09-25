@@ -13,8 +13,8 @@ top10longest_seq <- collatz_df %>%
   head(10)                       # displaying the top 10 
 
 # data frame to present in a vector form
-top10longest <- data.frame(Integer = top10longest$start,
-                              Length = top10longest$length)
+top10longest <- data.frame(Integer = top10longest_seq$start,
+                              Length = top10longest_seq$length)
 
 top10longest
 
