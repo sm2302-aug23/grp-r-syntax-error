@@ -7,20 +7,26 @@ library(dplyr)
 # 1. Find the top 10 starting integers that produce ---------------------------
 # the longest sequences [top10longest].
 
-top10longest <- collatz_df %>%
+# Collecting the top 10 longest sequence in decending order 
+top10longest_seq <- collatz_df %>%
   arrange(desc(length)) %>%      # arrange in descending order 
   head(10)                       # displaying the top 10 
 
-print(top10longest)
+# data frame to present in a vector form
+top10longest <- data.frame(Integer = top10longest_seq$start,
+                              Length = top10longest_seq$length)
+
+top10longest
 
 # 2. Find out which starting integer produces a sequence that reaches the ----
 # highest maximum value [max_val_int].
 
-max_val_int <- collatz_df %>%
+max_val <- collatz_df %>%
   filter(max_val == max(max_val)) %>%
   select(start)
 
-print(max_val_int)
+max_val_int <- data.frame(max_val = max_val$start)
+max_val_int
 
 # 3. What is the average length and standard deviation of the sequence for ----
 # even starting integers compared to odd ones? 
