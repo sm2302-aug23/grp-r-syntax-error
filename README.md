@@ -4,9 +4,9 @@
 Task 1 - 19B9029
 Task 2 - 19B9046
 Task 3 - 19B9052
-Task 4 - 19B9029
+Task 4 - 19B9046
 Task 5 - 19B9027
-Task 6 - 19B9046
+Task 6 - 19B9029
 README. - 19B9027 & 19B9052
 
 > Analysis of the Collatz Conjecture
